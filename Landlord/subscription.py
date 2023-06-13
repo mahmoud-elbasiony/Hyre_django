@@ -13,7 +13,7 @@ class Subscription(TimeStampedModel):
     name = models.CharField(max_length=100,blank=False)
     annual_price= models.FloatField(null=False)
     monthly_price= models.FloatField(null=False)
-    description = models.TextField(blank=False,max_length=128)
+    description = models.TextField(blank=False,max_length=128,default='')
 
     def __str__(self) -> str:
         return f"{self.name}"
