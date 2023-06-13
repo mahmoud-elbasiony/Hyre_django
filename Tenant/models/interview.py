@@ -5,10 +5,9 @@ from .user import User
 from .applicant import Applicant
 from .position import Position
 # Create your models here.
-class Interview(models.Model):
+class Interview(TimeStampedModel):
     interviewer = models.ForeignKey(User,on_delete=models.CASCADE)
     applicant = models.ForeignKey(Applicant,on_delete=models.CASCADE)
-    mobile = models.CharField(blank=False,max_length=128)
     position = models.ForeignKey(Position,on_delete=models.CASCADE)
     grade = models.CharField(blank=False,max_length=128)
     date = models.DateField(blank=False)

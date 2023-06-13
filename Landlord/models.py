@@ -7,7 +7,7 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
         
-
+        
 class Tenant(TimeStampedModel):
     name = models.CharField(max_length=100)
     expiration_date =  models.DateField(null=True)
