@@ -22,9 +22,23 @@ class CandidateView(generics.GenericAPIView):
         
         except Exception as e:
             return Response({
-                "success": True,
+                "success": False,
                 "message": "Something Wrong Happened",
                 "data": e
             }, status=status.HTTP_200_OK)
+        
+    def delete(self, request, pk):
+        try:
+            applicant = Applicant.objects.get(pk=pk)
+        except Applicant.DoesNotExist:
+            return Response({
+                "success": False,
+                "message": "Applicant not found"
+            }, status=status.HTTP_404_NOT_FOUND)
 
+        applicant.delete()
+        return Response({
+            "success": True,
+            "message": "Applicant deleted successfully"
+        }, status=status.HTTP_204_NO_CONTENT)
         
