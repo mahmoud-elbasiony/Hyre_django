@@ -353,15 +353,17 @@ a.footerlinks:hover{font-weight:400!important;text-decoration:none!important;}a.
                                                                                                                                     </td>
 
                                                                                                                                 </tr>
+                                                                                                                                {% if meeting_message != null %}
+                                                                                                                                    
                                                                                                                                 <tr>
                                                                                                                                     <td><span
                                                                                                                                             style="font-size:16px;"><span
                                                                                                                                                 style="font-family:Calibri,Candara,Segoe,&quot;Segoe UI&quot;,Optima,Arial,sans-serif;"><span
                                                                                                                                                     style="line-height:107%">
-                                                                                                                                                    {{meeting_message}}</span></span></span>
+                                                                                                                                                    <a href="{{meeting_message}}">meeting url</a> on {{date}}</span></span></span>
                                                                                                                                     </td>
                                                                                                                                 </tr>
-                                                                                                                                
+                                                                                                                                {% endif %}
                                                                                                                                 <tr>
                                                                                                                                     <td>
                                                                                                                                         <span
