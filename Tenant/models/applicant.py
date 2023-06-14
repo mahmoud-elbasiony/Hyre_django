@@ -8,9 +8,9 @@ class Applicant(TimeStampedModel):
   ("Female", "Female")
 )
     status_choice = (
-  ("Accepted", 1),
-  ("Rejected", 0),
-  ("Pending", 2)
+  (1,"Accepted"),
+  (0,"Rejected"),
+  (2,"Pending")
 )
     name = models.CharField(max_length=100,null=False)
     email= models.EmailField(null=False)
@@ -18,7 +18,7 @@ class Applicant(TimeStampedModel):
     gender = models.CharField(choices=gender_choice,null=False)
     edu_degree = models.CharField(max_length=128,null=False)
     position = models.ForeignKey(Position,on_delete=models.CASCADE)
-    status = models.IntegerField(choices=status_choice,null=False)
+    status = models.IntegerField(choices=status_choice,null=False,default=2)
     birth_date = models.DateField(null=False)
     Resume = models.FileField(null=True)
 
