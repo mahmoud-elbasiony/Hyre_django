@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "Landlord",
     "Tenant",
+     'django_celery_results',
+    #  "django_apscheduler",
+    "Scheduler"
 ]
 
 MIDDLEWARE = [
@@ -133,3 +136,26 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend',
+BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+
+
+# APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+# APSCHEDULER_RUN_NOW_TIMEOUT = 25 
