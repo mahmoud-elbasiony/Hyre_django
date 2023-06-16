@@ -35,7 +35,7 @@ class InterviewView(generics.GenericAPIView):
             MailView.InterviewEmail(
                 applicant_data.name,
                 interviewer_data.email,
-                applicant_data.email,
+                [applicant_data.email],
                 serializer.validated_data['url'],
                 serializer.validated_data['date']
             )
@@ -111,7 +111,7 @@ class InterviewDetailView(generics.GenericAPIView):
             MailView.InterviewEmail(
                 applicant_data.name,
                 interviewer_data.email,
-                applicant_data.email,
+                [applicant_data.email],
                 serializer.validated_data['url'],
                 serializer.validated_data['date']
             )
