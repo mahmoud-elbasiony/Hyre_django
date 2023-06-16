@@ -19,4 +19,9 @@ class PositionSerializer(serializers.ModelSerializer):
         model = Position
         fields = '__all__'
 
+# class CandidatesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Applicant
+#         fields = '__all__'
+
 
