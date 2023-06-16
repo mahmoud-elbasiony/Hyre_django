@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from Tenant.models import Interview,Position
+from Tenant.models import Interview,Position, Applicant
+
 
 
 class InterviewSerializer(serializers.ModelSerializer):
@@ -11,4 +12,8 @@ class InterviewSerializer(serializers.ModelSerializer):
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
+
+class CandidatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Applicant
         fields = '__all__'
