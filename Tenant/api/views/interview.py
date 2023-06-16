@@ -1,13 +1,14 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
-from Tenant.models import Interview
+from Tenant.models import Interview, Applicant, User
 from Tenant.api.serializers import InterviewSerializer
 import math
 from datetime import datetime
+from .mail import MailView
 
 
 class InterviewView(generics.GenericAPIView):
-    serializer_class = InterviewSerializer 
+    serializer_class = InterviewSerializer
     queryset = Interview.objects.all()
 
     def get(self, request):
@@ -23,6 +24,22 @@ class InterviewView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
+            applicant_data = Applicant.objects.get(
+                id=int(serializer.data.get('applicant'))
+            )
+            interviewer_data = User.objects.get(
+                id=int(serializer.data.get('interviewer'))
+            )
+
+            MailView.InterviewEmail(
+                applicant_data.name,
+                interviewer_data.email,
+                applicant_data.email,
+                serializer.validated_data['url'],
+                serializer.validated_data['date']
+            )
+
             return Response(
                 {
                     "success": True,
