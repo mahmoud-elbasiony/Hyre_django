@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 class InterviewView(generics.GenericAPIView):
-    serializer_class = InterviewSerializer
+    serializer_class = InterviewSerializer 
     queryset = Interview.objects.all()
 
     def get(self, request):
