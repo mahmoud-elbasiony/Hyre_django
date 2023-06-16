@@ -9,7 +9,6 @@ class User(AbstractUser, TimeStampedModel):
     name = models.CharField(max_length=100, blank=False)
     email = models.EmailField(null=False)
     password = models.CharField(max_length=128, blank=False)
-    company= models.ForeignKey(Tenant,on_delete=models.CASCADE)
     groups = models.ManyToManyField(
         Group,
         blank=True,

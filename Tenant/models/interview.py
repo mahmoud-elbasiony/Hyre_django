@@ -13,7 +13,7 @@ class Interview(TimeStampedModel):
     grade = models.IntegerField(blank=True,validators=[
             MaxValueValidator(100),
             MinValueValidator(0)
-        ])
+        ],null=True)
     date = models.DateField(blank=False)
     url = models.CharField(blank=False)
 
