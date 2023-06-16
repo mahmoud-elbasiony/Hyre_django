@@ -9,11 +9,14 @@ class InterviewSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PositionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Position
-
-class CandidatesSerializer(serializers.ModelSerializer):
+class ApplicantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Applicant
         fields = '__all__'
+
+class PositionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Position
+        fields = '__all__'
+
+
