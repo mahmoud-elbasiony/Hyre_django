@@ -22,7 +22,6 @@ app.conf.beat_schedule = {
     'Check interview remaining time': {
         'task': 'Scheduler.tasks.check_interview',
         'schedule': timedelta(seconds=50),
-        #'args': (2,)
     }
     
 }
