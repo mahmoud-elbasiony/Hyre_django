@@ -17,7 +17,7 @@ urlpatterns = [
     path('positions/', PositionView.as_view()),
     path('positions/<int:id>/', PositionDetailView.as_view()),
     path('candidates', CandidateView.as_view()),
-    path('candidates/<str:pk>', CandidateView.as_view())
+    path('candidates/<str:pk>', CandidateView.as_view()),
     path("emails/<str:type>",MailView.as_view()),
 
 ]

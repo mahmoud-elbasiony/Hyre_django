@@ -7,6 +7,5 @@ class Position(TimeStampedModel):
     vacancies= models.IntegerField(blank=False,null=True)
     description = models.TextField(blank=False,max_length=128)
     end_date = models.DateField(blank=False)
-    
     def __str__(self) -> str:
         return f"{self.name}"

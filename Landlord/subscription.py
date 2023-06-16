@@ -9,11 +9,24 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
+
+
 class Subscription(TimeStampedModel):
-    name = models.CharField(max_length=100,blank=False)
-    annual_price= models.FloatField(null=False)
-    monthly_price= models.FloatField(null=False)
+    choice=(
+        ("Annual","Annual"),
+        ("Monthly","Monthly"),
+    )
+    name=(
+        ("free","free"),
+        ("gold","gold"),
+        ("plantium","plantium"),
+    )
+    type= models.CharField(choices=choice,null=False)
+    price= models.FloatField(null=False)
+    name=models.CharField(choices=name,blank=False)
     description = models.TextField(blank=False,max_length=128,default='')
 
     def __str__(self) -> str:
-        return f"{self.name}"
+        return f"{self.name} {self.type}"
+    
+
