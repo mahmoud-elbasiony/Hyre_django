@@ -101,6 +101,21 @@ class InterviewDetailView(generics.GenericAPIView):
             serializer.validated_data['updated_at'] = datetime.now()
             serializer.save()
 
+            applicant_data = Applicant.objects.get(
+                id=int(serializer.data.get('applicant'))
+            )
+            interviewer_data = User.objects.get(
+                id=int(serializer.data.get('interviewer'))
+            )
+
+            MailView.InterviewEmail(
+                applicant_data.name,
+                interviewer_data.email,
+                applicant_data.email,
+                serializer.validated_data['url'],
+                serializer.validated_data['date']
+            )
+
             return Response({
                 "success": True,
                 "message": "Interview updated successfully",
