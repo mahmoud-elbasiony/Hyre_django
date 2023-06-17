@@ -139,4 +139,13 @@ class InterviewDetailView(generics.GenericAPIView):
                 }, status=status.HTTP_404_NOT_FOUND)
 
         interview.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        remaining_interviews = Interview.objects.all()
+        serializer = self.serializer_class(
+            remaining_interviews, many=True)
+
+        return Response({
+            "success": True,
+            "message": "Interview deleted successfully",
+            "data": serializer.data
+
+        }, status=status.HTTP_200_OK)
