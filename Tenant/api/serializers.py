@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Tenant.models import Interview,Position, Applicant
+from Tenant.models import Interview,Position, Applicant,User
 
 
 
@@ -25,3 +25,7 @@ class PositionSerializer(serializers.ModelSerializer):
 #         fields = '__all__'
 
 
+class GetUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Interview
+        fields = ["name","email","company","username"]
