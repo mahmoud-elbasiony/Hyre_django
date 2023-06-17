@@ -3,6 +3,9 @@ from rest_framework.decorators import api_view
 from Tenant.models.applicant import Applicant
 from rest_framework import status
 from Tenant.api.serializers import ApplicantSerializer
+from django.http import HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+
 @api_view(['GET'])
 def index (request):
     try:
@@ -40,8 +43,13 @@ def show (request , pk):
             "message": "Server error"
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(["GET"])
+def create (request):
+    form_url = os.getenv('HOST') + 'applicants/create'
+    return HttpResponseRedirect(form_url)
 
 @api_view(["POST"])
+@csrf_exempt
 def store (request):
     try:
         serializer = ApplicantSerializer(data=request.data)
@@ -64,6 +72,7 @@ def store (request):
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["PUT", "PATCH"])
+@csrf_exempt
 def edit(request, pk):
     try:
         applicant = Applicant.objects.get(pk=pk)
