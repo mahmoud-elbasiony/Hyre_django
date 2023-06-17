@@ -10,6 +10,7 @@ class InterviewSerializer(serializers.ModelSerializer):
 
 
 class ApplicantSerializer(serializers.ModelSerializer):
+    position = serializers.StringRelatedField() # used to return string name instead of id of position like accessors in laravel
     class Meta:
         model = Applicant
         fields = '__all__'
@@ -19,9 +20,5 @@ class PositionSerializer(serializers.ModelSerializer):
         model = Position
         fields = '__all__'
 
-# class CandidatesSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Applicant
-#         fields = '__all__'
 
 
