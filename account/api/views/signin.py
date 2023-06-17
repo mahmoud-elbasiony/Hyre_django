@@ -34,7 +34,7 @@ class SigninView(generics.GenericAPIView):
             return Response(
                 {
                     "status": False,
-                    "message": serializer.errors
+                    "message": serializer.errors.get("email") if serializer.errors.get("email")!=None else serializer.errors.get("password")
                 }, status=status.HTTP_400_BAD_REQUEST)
             
   

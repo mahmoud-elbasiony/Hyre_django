@@ -7,7 +7,7 @@ from .subscription import Subscription
 class Tenant(models.Model):
     name = models.CharField(max_length=100,unique=True)
     subscription= models.ForeignKey(Subscription,null=True,on_delete=models.SET_NULL)
-    free_trial = models.BooleanField()
+    free_trial = models.BooleanField(default=True)
     expiration_date = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
