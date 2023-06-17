@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path , include
 
 urlpatterns = [
+    path('', include('Landlord.api.urls')),
+    path('', include('account.api.urls')),
     path('admin/', admin.site.urls),
     path('tenant/', include('Tenant.api.urls')),
+
 ]

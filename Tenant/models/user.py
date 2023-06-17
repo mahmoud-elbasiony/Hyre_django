@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password, check_password
 class User(AbstractUser, TimeStampedModel):
     username = models.CharField(max_length=150, unique=True, default='')
     name = models.CharField(max_length=100, blank=False)
-    email = models.EmailField(null=False)
+    email = models.EmailField(null=False,unique=True)
     password = models.CharField(max_length=128, blank=False)
     groups = models.ManyToManyField(
         Group,
@@ -28,4 +28,4 @@ class User(AbstractUser, TimeStampedModel):
         return check_password(raw_password, self.password)
     
     def __str__(self):
-        return self.name
+        return f"{self.username}"

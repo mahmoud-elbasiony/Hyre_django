@@ -5,10 +5,10 @@ from .subscription import Subscription
         
         
 class Tenant(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
     subscription= models.ForeignKey(Subscription,null=True,on_delete=models.SET_NULL)
     free_trial = models.BooleanField()
-    expiration_date = models.DateTimeField()
+    expiration_date = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -19,7 +19,9 @@ class Tenant(models.Model):
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    company= models.ForeignKey(Tenant,on_delete=models.CASCADE,blank=False)
+    # company= models.ForeignKey(Tenant,on_delete=models.CASCADE,blank=False,default="")
+    company= models.ForeignKey(Tenant,on_delete=models.SET_NULL,blank=True,null=True)
+
 
     class Meta:
         abstract = True
