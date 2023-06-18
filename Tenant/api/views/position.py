@@ -17,7 +17,8 @@ class PositionView(generics.GenericAPIView):
     queryset = Position.objects.all()
 
     def get(self, request):
-        positions = Position.objects.all()
+        positions = Position.objects.filter(company=request.user.company_id)
+        print(request.user.company_id)
         serializer = self.serializer_class(positions, many=True)
         return Response({
             "success": True,
