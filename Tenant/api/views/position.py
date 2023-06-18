@@ -3,6 +3,8 @@ from Tenant.models import Position
 from rest_framework.response import Response
 from rest_framework import status, generics
 from datetime import datetime
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -15,7 +17,8 @@ class PositionView(generics.GenericAPIView):
     queryset = Position.objects.all()
 
     def get(self, request):
-        positions = Position.objects.all()
+        positions = Position.objects.filter(company=request.user.company_id)
+        print(request.user.company_id)
         serializer = self.serializer_class(positions, many=True)
         return Response({
             "success": True,
@@ -42,6 +45,7 @@ class PositionView(generics.GenericAPIView):
                     "status": False,
                     "message": serializer.errors
                 }, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class PositionDetailView(generics.GenericAPIView):

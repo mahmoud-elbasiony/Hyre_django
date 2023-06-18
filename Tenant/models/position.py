@@ -3,7 +3,7 @@ from Landlord.models import TimeStampedModel
 
 # Create your models here.
 class Position(TimeStampedModel):
-    name = models.CharField(max_length=100,blank=False)
+    name = models.CharField(max_length=100,blank=False,unique=True)
     vacancies= models.IntegerField(blank=False,null=True)
     description = models.TextField(blank=False,max_length=128)
     end_date = models.DateField(blank=False)
