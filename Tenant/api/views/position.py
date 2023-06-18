@@ -3,6 +3,8 @@ from Tenant.models import Position
 from rest_framework.response import Response
 from rest_framework import status, generics
 from datetime import datetime
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -42,6 +44,7 @@ class PositionView(generics.GenericAPIView):
                     "status": False,
                     "message": serializer.errors
                 }, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class PositionDetailView(generics.GenericAPIView):
