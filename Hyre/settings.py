@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -44,9 +45,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "Landlord",
     "Tenant",
-     'django_celery_results',
-    #  "django_apscheduler",
-    "Scheduler"
+    'django_celery_results',
+    "Scheduler",
+    "corsheaders",
+    "socketio_app" 
 ]
 
 MIDDLEWARE = [
@@ -57,6 +59,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+ 
 ]
 
 ROOT_URLCONF = "Hyre.urls"
@@ -77,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "Hyre.wsgi.application"
+ASGI_APPLICATION = "Hyre.asgi.application"
 
 
 # Database
@@ -156,6 +161,7 @@ CACHES = {
     }
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 # APSCHEDULER_RUN_NOW_TIMEOUT = 25 
