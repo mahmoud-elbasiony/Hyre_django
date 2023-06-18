@@ -11,7 +11,7 @@ class Tenant(models.Model):
     expiration_date = models.DateTimeField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    image = models.ImageField(upload_to='images/', blank=True)
     def __str__(self) -> str:
         return f"{self.name}"
     

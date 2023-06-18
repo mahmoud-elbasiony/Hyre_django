@@ -1,6 +1,7 @@
 from django.db import models
 from Landlord.models import TimeStampedModel
 from .position import Position
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 # Create your models here.
 class Applicant(TimeStampedModel):
     gender_choice = (
@@ -20,7 +21,7 @@ class Applicant(TimeStampedModel):
     position = models.ForeignKey(Position,on_delete=models.CASCADE)
     status = models.IntegerField(choices=status_choice,null=False,default=2)
     birth_date = models.DateField(null=False)
-    Resume = models.FileField(null=True)
+    Resume = models.FileField(upload_to='raw/', blank=True, storage=RawMediaCloudinaryStorage())
 
 
     def __str__(self) -> str:
