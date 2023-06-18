@@ -22,5 +22,5 @@ urlpatterns = [
     path('', include('account.api.urls')),
     path('admin/', admin.site.urls),
     path('tenant/', include('Tenant.api.urls')),
-
+    path('tenant/', include('cloudinary_app.api.urls')),
 ]
