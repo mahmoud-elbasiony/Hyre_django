@@ -4,13 +4,14 @@ from Tenant.api.views.applicant import index, show, store, edit, destroy
 from Tenant.api.views.candidates import CandidateView
 from .views.mail import MailView
 from .views.position import PositionView,PositionDetailView
-
+from .views.user import UserView
 
 urlpatterns = [
     path('interviews/', InterviewView.as_view() ),
     path('interviews/<str:pk>/', InterviewDetailView.as_view() ),
-    path('applicants/create/', store),
+    path('applicants/create', store),
     path('applicants/', index),
+    path('users', UserView.as_view()),
     path('applicants/<str:pk>/edit/', edit),
     path('applicants/<str:pk>/destroy/', destroy),
     path('applicants/<str:pk>/', show),
