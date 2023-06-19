@@ -1,12 +1,17 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes, permission_classes, authentication_classes
+from rest_framework.parsers import MultiPartParser
 from Tenant.models.applicant import Applicant
 from rest_framework import status
 from Tenant.api.serializers import ApplicantSerializer
+from django.views.decorators.csrf import csrf_exempt
+from Tenant.api.token import createToken,verifyToken
+import os
+from rest_framework.exceptions import ValidationError
 @api_view(['GET'])
 def index (request):
     try:
-        applicants = Applicant.objects.all()
+        applicants = Applicant.objects.filter(company_id=request.user.id)
         serializer = ApplicantSerializer(applicants, many=True)
         return Response({
             "success": True,
@@ -14,6 +19,7 @@ def index (request):
             "data": serializer.data
         }, status=status.HTTP_200_OK)
     except Exception as e:
+        print(e)
         return Response({
             "success": False,
             "message": "Server error"
@@ -22,7 +28,7 @@ def index (request):
 @api_view(["GET"])
 def show (request , pk):
     try:
-        applicant = Applicant.objects.get(pk=pk)
+        applicant = Applicant.objects.get(pk=pk , company_id=request.user.id)
         serializer = ApplicantSerializer(applicant , many=False)
         return Response ({
             "success": True,
@@ -35,16 +41,33 @@ def show (request , pk):
             "message": "Applicant does not exists"
         }, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e :
+        print(e)
         return Response({
             "success": False,
             "message": "Server error"
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
 @api_view(["POST"])
-def store (request):
+@csrf_exempt
+@parser_classes([MultiPartParser])
+@authentication_classes([])
+@permission_classes([])
+def store (request , token):
+    payload = verifyToken(token)
+    if not payload:
+        return Response({
+            "success": False,
+            "message": "Form time ended"
+        }, status=status.HTTP_404_NOT_FOUND)
+
+    additional_data = {
+        "company": payload['company_id']
+    }
+    data = {**request.data.dict(), **additional_data}
     try:
-        serializer = ApplicantSerializer(data=request.data)
+        resume_file = request.FILES.get("resume")  # Retrieve the file object using the correct field name
+        data["resume"] = resume_file
+        serializer = ApplicantSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -58,12 +81,14 @@ def store (request):
             "data" : serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
+        print(e)
         return Response({
             "success": False,
             "message": "Server error"
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["PUT", "PATCH"])
+@csrf_exempt
 def edit(request, pk):
     try:
         applicant = Applicant.objects.get(pk=pk)
@@ -86,12 +111,14 @@ def edit(request, pk):
             "message": "Applicant does not exist"
         }, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
+        print(e)
         return Response({
             "success": False,
             "message": "Server error"
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["DELETE"])
+@csrf_exempt
 def destroy(request, pk):
     try:
         applicant = Applicant.objects.get(pk=pk)
@@ -99,14 +126,28 @@ def destroy(request, pk):
         return Response({
             "success": True,
             "message": "Applicant deleted successfully",
-        }, status=status.HTTP_204_NO_CONTENT)
+        }, status=status.HTTP_201_CREATED)
     except Applicant.DoesNotExist:
         return Response({
             "success": False,
             "message": "Applicant does not exist",
         }, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
+        print(e)
         return Response({
             "success": False,
             "message": "Server error",
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def generateAplicantFormLink (request):
+    token = createToken (request.user.id)
+    link= f"{os.getenv('HOST')}applicants/create/{token}"
+    print(link)
+    return Response({
+        "success": True,
+        "message": "Token generated",
+        "data" : link
+    }, status=status.HTTP_200_OK)
+
+
