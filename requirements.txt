@@ -1,3 +1,4 @@
+agora-token-builder==1.0.0
 asgiref==3.7.2
 certifi==2023.5.7
 charset-normalizer==3.1.0
@@ -16,4 +17,5 @@ requests==2.31.0
 six==1.16.0
 sqlparse==0.4.4
 typing_extensions==4.6.3
+tzdata==2023.3
 urllib3==1.26.16
