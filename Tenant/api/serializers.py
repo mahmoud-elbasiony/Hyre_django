@@ -28,5 +28,5 @@ class PositionSerializer(serializers.ModelSerializer):
 
 class GetUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Interview
+        model = User
         fields = ["name","email","company","username"]

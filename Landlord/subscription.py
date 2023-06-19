@@ -25,6 +25,7 @@ class Subscription(TimeStampedModel):
     price= models.FloatField(null=False)
     name=models.CharField(choices=name,blank=False)
     description = models.TextField(blank=False,max_length=128,default='')
+    users_no=models.IntegerField(blank=False,default=100)
 
     def __str__(self) -> str:
         return f"{self.name} {self.type}"
