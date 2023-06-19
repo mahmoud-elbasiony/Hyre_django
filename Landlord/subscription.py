@@ -26,6 +26,7 @@ class Subscription(TimeStampedModel):
     name=models.CharField(choices=name,blank=False)
     description = models.TextField(blank=False,max_length=128,default='')
     users_no = models.IntegerField(blank=False, default=100)
+    pr_id = models.CharField(blank=False , default="")
 
     def __str__(self) -> str:
         return f"{self.name} {self.type}"
