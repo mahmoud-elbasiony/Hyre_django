@@ -2,10 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status, generics
 from Tenant.api.serializers import ApplicantSerializer
 from Tenant.models import Applicant
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 
-@method_decorator(csrf_exempt, name='dispatch')
 class CandidateView(generics.GenericAPIView):
 
     serializer_class = ApplicantSerializer

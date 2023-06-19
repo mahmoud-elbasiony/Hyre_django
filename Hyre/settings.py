@@ -39,6 +39,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,7 +57,9 @@ INSTALLED_APPS = [
     "Tenant",
     "account",
     "corsheaders",
+    "Stripe",
     "cloudinary_app",
+
 
 ]
 
@@ -171,4 +174,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL="Tenant.user"
 
-
+SECRET_STRIPE_KEY = "sk_test_51MsAYFIfGZb04ICqVdUN1vwnIJ7N4GUeMvwt8l0E2ywQdl2tPSzFhjFXHUERFJ7GHXdblcDzYichH4SlhleVbbSr00bkxJui4E"
+PUBLIC_STRIPE_KEY = "pk_test_51MsAYFIfGZb04ICq7FixyhCZAOknxZqT6ZUfiXqeRTEdWmu3O4wLlQU2y0rj8PxAwzEyYA1GxI0JF8p9NNvCxuZP00dJC7W6NP"

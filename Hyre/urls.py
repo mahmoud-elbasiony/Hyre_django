@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tenant/', include('Tenant.api.urls')),
     path('tenant/', include('cloudinary_app.api.urls')),
+    path('stripe/', include('Stripe.urls')),
+
 ]
