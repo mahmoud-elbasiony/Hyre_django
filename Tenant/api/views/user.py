@@ -5,11 +5,11 @@ from account.api.serializers import SignupSerializer
 from Tenant.api.serializers import GetUserSerializer
 import math
 from .mail import MailView
-
+from Tenant.permissions import TenantAdminPermission
 
 class UserView(generics.GenericAPIView):
     serializer_class = GetUserSerializer
-
+    permission_classes=[TenantAdminPermission]
     def get(self, request):
         company_id=request.user.company_id
         users = User.objects.filter(company=company_id)
@@ -22,7 +22,6 @@ class UserView(generics.GenericAPIView):
 
     def post(self, request):
             self.serializer_class = SignupSerializer
-            company_id = request.user.company_id
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
                 serializer.validated_data["company_id"]=request.user.company
