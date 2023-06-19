@@ -19,8 +19,8 @@ class Tenant(models.Model):
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # company= models.ForeignKey(Tenant,on_delete=models.CASCADE,blank=False,default="")
-    company= models.ForeignKey(Tenant,on_delete=models.SET_NULL,blank=True,null=True)
+    company= models.ForeignKey(Tenant,on_delete=models.CASCADE,blank=False,default="")
+    # company= models.ForeignKey(Tenant,on_delete=models.SET_NULL,blank=True,null=True)
 
 
     class Meta:
