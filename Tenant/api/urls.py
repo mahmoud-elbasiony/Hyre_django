@@ -1,7 +1,7 @@
 from django.urls import path, include
-from Tenant.api.views import InterviewView, InterviewDetailView
-from Tenant.api.views.applicant import index, show, store, edit, destroy
-from Tenant.api.views.candidates import CandidateView
+from .views import InterviewView, InterviewDetailView
+from .views.applicant import index, show, store, edit, destroy
+from .views.candidates import CandidateView
 from .views.mail import MailView
 from .views.position import PositionView,PositionDetailView
 
@@ -19,6 +19,5 @@ urlpatterns = [
     path('candidates', CandidateView.as_view()),
     path('candidates/<str:pk>', CandidateView.as_view()),
     path("emails/<str:type>",MailView.as_view()),
-
 ]
 
