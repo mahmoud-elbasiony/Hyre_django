@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
+# import cloudinary
+# config = cloudinary.config(secure=True)
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,13 +47,16 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
     "rest_framework",
     'rest_framework.authtoken',
+    'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     "Landlord",
     "Tenant",
     "account",
     "corsheaders",
+    "cloudinary_app",
 
 ]
 
@@ -147,10 +151,19 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv("cloudinary_cloud_name"),
+    'API_KEY': os.getenv("cloudinary_api_key"),
+    'API_SECRET': os.getenv("cloudinary_api_secret")
+}
 STATIC_URL = "static/"
+MEDIA_URL = '/media/'  # or any prefix you choose
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

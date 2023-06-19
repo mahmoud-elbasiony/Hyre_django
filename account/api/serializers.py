@@ -68,7 +68,8 @@ class TenantSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Tenant
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['free_trial']
 
 
 
