@@ -13,14 +13,8 @@ def company_positions(request, token):
     if not isinstance(request.user,AnonymousUser):
         company_id = request.user.id
     else:
-        payload = verifyToken(token)
-        if not payload:
-            return Response({
-                "success": False,
-                "message": "Form time ended"
-            }, status=status.HTTP_404_NOT_FOUND)
+        payload = request.payload
         company_id = payload['company_id']
-
     try:
         positions = Position.objects.filter(company_id=company_id)
         serializer = PositionSerializer(positions, many=True)
