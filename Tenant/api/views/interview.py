@@ -5,6 +5,7 @@ from Tenant.api.serializers import InterviewSerializer
 import math
 from datetime import datetime
 from .mail import MailView
+import os
 
 
 class InterviewView(generics.GenericAPIView):
@@ -36,8 +37,9 @@ class InterviewView(generics.GenericAPIView):
                 applicant_data.name,
                 interviewer_data.email,
                 [applicant_data.email],
-                serializer.validated_data['url'],
-                serializer.validated_data['date']
+                os.getenv('MEETING_URL'),
+                serializer.validated_data['date'],
+                serializer.validated_data['room'],
             )
 
             return Response(
@@ -112,8 +114,10 @@ class InterviewDetailView(generics.GenericAPIView):
                 applicant_data.name,
                 interviewer_data.email,
                 [applicant_data.email],
-                serializer.validated_data['url'],
-                serializer.validated_data['date']
+                os.getenv('MEETING_URL'),
+                serializer.validated_data['date'],
+                serializer.validated_data['room'],
+
             )
 
             return Response({

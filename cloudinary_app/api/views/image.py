@@ -1,11 +1,12 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
 from Landlord.models import Tenant
+from Tenant.permissions.tenantadmin import TenantAdminPermission
 from cloudinary_app.api.serializers import ImageSerializer
 
 class ImageView(generics.GenericAPIView):
     serializer_class = ImageSerializer
-
+    permission_classes=[TenantAdminPermission]
     def put(self, request):
         company = request.user.company_id
         company = Tenant.objects.get(id=company)

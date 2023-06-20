@@ -33,11 +33,12 @@ def company_positions(request, token):
 # Get the company data from the database
 @api_view(["GET"])
 def company_full_data (request):
+    image=request.user.company.image.url if request.user.company.image else None
     company = {
         "name": request.user.username,
         "email": request.user.email,
         "id": request.user.id,
-        "image":request.user.company.image.url,
+        "image":image,
         "company":request.user.company.name,
         "subscription":request.user.company.subscription.name
     }
