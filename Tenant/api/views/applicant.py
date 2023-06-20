@@ -28,7 +28,7 @@ def index (request):
 @api_view(["GET"])
 def show (request , pk):
     try:
-        applicant = Applicant.objects.get(pk=pk , company_id=request.user.id)
+        applicant = Applicant.objects.filter(pk=pk , company_id=request.user.id)
         serializer = ApplicantSerializer(applicant , many=False)
         return Response ({
             "success": True,
@@ -86,6 +86,29 @@ def store (request , token):
             "success": False,
             "message": "Server error"
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def show_by_position (request, position_id):
+    try:
+        applicant = Applicant.objects.filter(position_id=position_id, company_id=request.user.id)
+        serializer = ApplicantSerializer(applicant , many=True)
+        return Response ({
+            "success": True,
+            "message": "Applicant retreived successfully",
+            "data": serializer.data
+        })
+    except Applicant.DoesNotExist as e:
+        return Response({
+            "success": True,
+            "message": "There is no applicants for this position"
+        }, status=status.HTTP_200_OK)
+    except Exception as e :
+        print(e)
+        return Response({
+            "success": False,
+            "message": "Server error"
+        } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(["PUT", "PATCH"])
 @csrf_exempt
