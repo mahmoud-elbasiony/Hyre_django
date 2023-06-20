@@ -26,6 +26,6 @@ def verifyToken(token):
         secret = os.getenv('GENERATE_LINK_SECRET')
         payload = jwt.decode(token, secret, algorithms=['HS256'])
         return payload
-    except InvalidTokenError:
+    except jwt.InvalidTokenError:
         print("return false")
         return False

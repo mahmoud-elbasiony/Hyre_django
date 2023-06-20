@@ -59,8 +59,6 @@ def store (request , token):
     }
     data = {**request.data.dict(), **additional_data}
     try:
-        resume_file = request.FILES.get("resume")  # Retrieve the file object using the correct field name
-        data["resume"] = resume_file
         serializer = ApplicantSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
