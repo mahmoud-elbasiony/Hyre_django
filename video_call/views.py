@@ -12,10 +12,10 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def lobby(request):
-    return render(request, 'base/lobby.html')
+    return render(request, 'video_call/lobby.html')
 
 def room(request):
-    return render(request, 'base/room.html')
+    return render(request, 'video_call/room.html')
 
 
 def getToken(request):

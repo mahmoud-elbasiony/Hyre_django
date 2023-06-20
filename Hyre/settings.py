@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "account",
     "corsheaders",
     "cloudinary_app",
+    "video_call",
 
 ]
 
@@ -163,6 +164,11 @@ CLOUDINARY_STORAGE = {
 STATIC_URL = "static/"
 MEDIA_URL = '/media/'  # or any prefix you choose
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+#! for video call
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 
 
 # Default primary key field type
