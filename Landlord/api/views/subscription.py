@@ -16,6 +16,15 @@ class SubscriptionView(generics.GenericAPIView):
         serializer = self.serializer_class(subscription, many=True)
         return Response({
             "success": True,
+            "message": "subscription retrieved successfully",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+
+    def get(self, request):
+        subscription = Subscription.objects.all()
+        serializer = self.serializer_class(subscription, many=True)
+        return Response({
+            "success": True,
             "message": "subscription retreived successfully",
             "data": serializer.data
         }, status=status.HTTP_200_OK)

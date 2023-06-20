@@ -24,4 +24,6 @@ urlpatterns = [
     path('tenant/', include('Tenant.api.urls')),
     path('tenant/', include('cloudinary_app.api.urls')),
     path('meeting/', include('video_call.urls')),
+    path('stripe/', include('Stripe.urls')),
+
 ]

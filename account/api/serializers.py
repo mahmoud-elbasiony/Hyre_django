@@ -55,7 +55,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user = User(
             email=self.validated_data.get('email'),
             username=self.validated_data.get('username'),
-            name=self.validated_data.get('username'),
+            name=self.validated_data.get('name'),
             company=self.validated_data.get('company_id'),
         )
 
