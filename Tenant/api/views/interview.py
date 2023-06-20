@@ -10,10 +10,9 @@ import os
 
 class InterviewView(generics.GenericAPIView):
     serializer_class = InterviewSerializer
-    queryset = Interview.objects.all()
 
     def get(self, request):
-        interviews = Interview.objects.all()
+        interviews = Interview.objects.filter(company=request.user.company.id)
         serializer = self.serializer_class(interviews, many=True)
         return Response({
             "success": True,
@@ -60,17 +59,16 @@ class InterviewView(generics.GenericAPIView):
 
 
 class InterviewDetailView(generics.GenericAPIView):
-    queryset = Interview.objects.all()
     serializer_class = InterviewSerializer
 
-    def get_Interview(self, pk):
+    def get_Interview(self, pk, company):
         try:
-            return Interview.objects.get(pk=pk)
+            return Interview.objects.get(pk=pk, company=company)
         except:
             return None
 
     def get(self, request, pk):
-        interview = self.get_Interview(pk=pk)
+        interview = self.get_Interview(pk=pk, company=request.user.company.id)
         if interview == None:
             return Response(
                 {
@@ -89,7 +87,7 @@ class InterviewDetailView(generics.GenericAPIView):
         })
 
     def patch(self, request, pk):
-        interview = self.get_Interview(pk)
+        interview = self.get_Interview(pk=pk, company=request.user.company.id)
         if interview == None:
             return Response(
                 {
@@ -134,7 +132,7 @@ class InterviewDetailView(generics.GenericAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        interview = self.get_Interview(pk)
+        interview = self.get_Interview(pk=pk, company=request.user.company.id)
         if interview == None:
             return Response(
                 {
@@ -143,7 +141,8 @@ class InterviewDetailView(generics.GenericAPIView):
                 }, status=status.HTTP_404_NOT_FOUND)
 
         interview.delete()
-        remaining_interviews = Interview.objects.all()
+        remaining_interviews = Interview.objects.filter(
+            company=request.user.company.id)
         serializer = self.serializer_class(
             remaining_interviews, many=True)
 
