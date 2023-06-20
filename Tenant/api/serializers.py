@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from rest_framework import serializers
 
 from Tenant.models import Interview,Position, Applicant,User
@@ -25,8 +26,14 @@ class PositionSerializer(serializers.ModelSerializer):
         model = Position
         fields = '__all__'
 
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Group
+        fields = ('id','name')
 
 class GetUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id","name","email","company","username","groups"]
+
+
