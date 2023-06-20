@@ -7,7 +7,6 @@ class ApplicantsMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        print("Heelo")
         if request.path.startswith('/tenant/applicants/create/'):
             token = request.path.split('/')[-1]
             payload = verifyToken(token)
