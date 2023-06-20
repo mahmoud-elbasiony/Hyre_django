@@ -18,7 +18,7 @@ class Interview(TimeStampedModel):
     ], null=True)
     date = models.DateField(blank=False)
     url = models.CharField(blank=False)
-    room = models.CharField(blank=False)
+    room = models.CharField(blank=True)
 
     def __str__(self) -> str:
         return f"applicant: {self.applicant} position: {self.position}"
