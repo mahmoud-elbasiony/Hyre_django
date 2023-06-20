@@ -32,6 +32,7 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('id','name')
 
 class GetUserSerializer(serializers.ModelSerializer):
+    groups = GroupSerializer(many=True)
     class Meta:
         model = User
         fields = ["id","name","email","company","username","groups"]
