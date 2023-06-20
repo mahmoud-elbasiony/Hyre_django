@@ -11,7 +11,7 @@ from rest_framework.exceptions import ValidationError
 @api_view(['GET'])
 def index (request):
     try:
-        applicants = Applicant.objects.filter(company_id=request.user.id)
+        applicants = Applicant.objects.filter(company_id=request.user.id,status=2)
         serializer = ApplicantSerializer(applicants, many=True)
         return Response({
             "success": True,
@@ -81,7 +81,33 @@ def store (request , token):
             "message": "Server error"
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['GET'])
+@api_view(['PUT'])
+@csrf_exempt
+def edit (request , pk):
+    status_applicant = request.data
+    try:
+        applicant = Applicant.objects.get(pk=pk)
+        applicant.status = status_applicant
+        serializer = ApplicantSerializer(applicant, data={'status': status_applicant}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "success": True,
+                "message": "Applicant updated successfully",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response ({
+            "success" : False,
+            "message" : "Invalid inserted data",
+            "data" : serializer.errors
+        },status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({
+            "success" : False,
+            "message" : "Server error"
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(["GET"])
 def show_by_position (request, position_id):
     try:
         applicant = Applicant.objects.filter(position_id=position_id, company_id=request.user.id)
@@ -126,12 +152,13 @@ def destroy(request, pk):
 
 @api_view(['GET'])
 def generateAplicantFormLink (request):
-    token = createToken (request.user.id)
-    link= f"{os.getenv('HOST')}applicants/create/{token}"
+    data = createToken (request.user.id)
+    link= f"{os.getenv('HOST')}applicants/create/{data['token']}"
+    data['link'] = link
     return Response({
         "success": True,
         "message": "Token generated",
-        "data" : link
+        "data" : data
     }, status=status.HTTP_200_OK)
 
 
