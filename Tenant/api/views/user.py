@@ -40,7 +40,7 @@ class UserView(generics.GenericAPIView):
                 return Response(
                     {
                         "status": False,
-                        "message": "failed to created successfully",
+                        "message": "user registration failed",
                         "data":serializer.errors
                     },
                     status=status.HTTP_400_BAD_REQUEST
