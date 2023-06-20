@@ -1,10 +1,9 @@
 from rest_framework.response import Response
+from django.contrib.auth.models import Group
 from rest_framework import status, generics
-from Landlord.models import Tenant
+from Tenant.models import User
 from account.api.serializers import TenantSerializer
 from account.api.serializers import SignupSerializer
-import math
-from datetime import datetime
 
 
 class SignupView(generics.GenericAPIView):
@@ -35,6 +34,9 @@ class SignupView(generics.GenericAPIView):
                 tenant.save()
                 user.validated_data["company_id"]=tenant.instance
                 user.save()
+                tenant_admin_group=Group.objects.filter(name="Tenant Admin").first()
+                myuser=User.objects.filter(email=user.validated_data["email"]).first()
+                myuser.groups.add(tenant_admin_group)
                 return Response(
                     {
                         "success": True,
