@@ -42,7 +42,10 @@ def company_full_data (request):
     company = {
         "name": request.user.username,
         "email": request.user.email,
-        "id": request.user.id
+        "id": request.user.id,
+        "image":request.user.company.image.url,
+        "company":request.user.company.name,
+        "subscription":request.user.company.subscription.name
     }
     return Response ({
         "success": True,

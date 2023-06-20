@@ -21,7 +21,7 @@ def create_checkout_session(request):
                 },
             ],
             mode='payment',
-            success_url='http://localhost:4200/dashboard/payment/successful',
+            success_url='http://localhost:4200/payment/successful',
             cancel_url='http://localhost:4200/dashboard/subscriptions',
         )
     except stripe.error.StripeError as e:
