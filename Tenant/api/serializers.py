@@ -29,4 +29,4 @@ class PositionSerializer(serializers.ModelSerializer):
 class GetUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["name","email","company","username"]
+        fields = ["id","name","email","company","username","groups"]

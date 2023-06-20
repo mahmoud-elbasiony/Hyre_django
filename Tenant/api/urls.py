@@ -2,6 +2,7 @@ from django.urls import path, include
 from Tenant.api.views import InterviewView, InterviewDetailView
 from Tenant.api.views.applicant import index, show, store, edit, destroy, generateAplicantFormLink
 from Tenant.api.views.candidates import CandidateView
+from Tenant.api.views.delete_users import destroy_user
 from .views.mail import MailView
 from .views.position import PositionView,PositionDetailView
 from .views.user import UserView
@@ -13,6 +14,7 @@ urlpatterns = [
     path('applicants/create/<str:token>', store),
     path('applicants/', index),
     path('users', UserView.as_view()),
+    path('users/<int:pk>/destroy/', destroy_user),
     path('applicants/<str:pk>/edit/', edit),
     path('applicants/<str:pk>/destroy/', destroy),
     path('applicants/<str:pk>/', show),

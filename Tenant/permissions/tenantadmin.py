@@ -7,9 +7,6 @@ from rest_framework.permissions import BasePermission
 class TenantAdminPermission(BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.groups.filter(name="tenant admin").exists():
-            return Response({
-            "success": True,
-            "message": "users retreived successfully",
-        }, status=status.HTTP_403_FORBIDDEN)
+        if request.user.groups.filter(name="Tenant Admin").exists():
+            return True
         return False
