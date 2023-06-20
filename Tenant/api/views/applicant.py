@@ -53,13 +53,7 @@ def show (request , pk):
 @authentication_classes([])
 @permission_classes([])
 def store (request , token):
-    payload = verifyToken(token)
-    if not payload:
-        return Response({
-            "success": False,
-            "message": "Form time ended"
-        }, status=status.HTTP_404_NOT_FOUND)
-
+    payload = request.payload
     additional_data = {
         "company": payload['company_id']
     }
@@ -166,7 +160,6 @@ def destroy(request, pk):
 def generateAplicantFormLink (request):
     token = createToken (request.user.id)
     link= f"{os.getenv('HOST')}applicants/create/{token}"
-    print(link)
     return Response({
         "success": True,
         "message": "Token generated",
