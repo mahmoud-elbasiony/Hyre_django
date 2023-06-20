@@ -37,7 +37,8 @@ class InterviewView(generics.GenericAPIView):
                 interviewer_data.email,
                 [applicant_data.email],
                 serializer.validated_data['url'],
-                serializer.validated_data['date']
+                serializer.validated_data['date'],
+                serializer.validated_data['room'],
             )
 
             return Response(
@@ -113,7 +114,9 @@ class InterviewDetailView(generics.GenericAPIView):
                 interviewer_data.email,
                 [applicant_data.email],
                 serializer.validated_data['url'],
-                serializer.validated_data['date']
+                serializer.validated_data['date'],
+                serializer.validated_data['room'],
+
             )
 
             return Response({
