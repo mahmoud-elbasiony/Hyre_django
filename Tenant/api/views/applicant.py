@@ -5,7 +5,7 @@ from Tenant.models.applicant import Applicant
 from rest_framework import status
 from Tenant.api.serializers import ApplicantSerializer
 from django.views.decorators.csrf import csrf_exempt
-from Tenant.api.token import createToken,verifyToken
+from Tenant.api.token import createToken
 import os
 from rest_framework.exceptions import ValidationError
 @api_view(['GET'])
@@ -53,13 +53,7 @@ def show (request , pk):
 @authentication_classes([])
 @permission_classes([])
 def store (request , token):
-    payload = verifyToken(token)
-    if not payload:
-        return Response({
-            "success": False,
-            "message": "Form time ended"
-        }, status=status.HTTP_404_NOT_FOUND)
-
+    payload = request.payload
     additional_data = {
         "company": payload['company_id']
     }
@@ -109,38 +103,6 @@ def show_by_position (request, position_id):
             "message": "Server error"
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-@api_view(["PUT", "PATCH"])
-@csrf_exempt
-def edit(request, pk):
-    try:
-        applicant = Applicant.objects.get(pk=pk)
-        serializer = ApplicantSerializer(applicant, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({
-                "success": True,
-                "message": "Applicant updated successfully",
-                "data": serializer.data
-            }, status=status.HTTP_200_OK)
-        return Response({
-            "success": False,
-            "message": "Invalid data",
-            "errors": serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
-    except Applicant.DoesNotExist:
-        return Response({
-            "success": False,
-            "message": "Applicant does not exist"
-        }, status=status.HTTP_404_NOT_FOUND)
-    except Exception as e:
-        print(e)
-        return Response({
-            "success": False,
-            "message": "Server error"
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-@api_view(["DELETE"])
 @csrf_exempt
 def destroy(request, pk):
     try:
@@ -166,7 +128,6 @@ def destroy(request, pk):
 def generateAplicantFormLink (request):
     token = createToken (request.user.id)
     link= f"{os.getenv('HOST')}applicants/create/{token}"
-    print(link)
     return Response({
         "success": True,
         "message": "Token generated",
