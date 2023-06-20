@@ -73,3 +73,20 @@ class TenantSerializer(serializers.ModelSerializer):
 
 
 
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    password_confirm = serializers.CharField(write_only=True)
+    class Meta:
+        model = User
+        fields = ["password_confirm",'password']
+
+
+    def validate(self, attrs):
+        print(attrs.get('password'),attrs.get('password_confirm'))
+        if attrs.get('password') != attrs.get('password_confirm'):
+            raise serializers.ValidationError(
+                {
+                    'password': "Password doesn't match"
+                }
+            )
+        return attrs
+
