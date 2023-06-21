@@ -28,7 +28,7 @@ def index (request):
 @api_view(["GET"])
 def show (request , pk):
     try:
-        applicant = Applicant.objects.filter(pk=pk , company_id=request.user.id)
+        applicant = Applicant.objects.filter(pk=pk , company_id=request.user.id).first()
         serializer = ApplicantSerializer(applicant , many=False)
         return Response ({
             "success": True,
