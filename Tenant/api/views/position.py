@@ -18,7 +18,6 @@ class PositionView(generics.GenericAPIView):
 
     def get(self, request):
         positions = Position.objects.filter(company=request.user.company_id)
-        print(request.user.company_id)
         serializer = self.serializer_class(positions, many=True)
         return Response({
             "success": True,
@@ -27,7 +26,8 @@ class PositionView(generics.GenericAPIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        mydata={**request.data,"company":request.user.company_id}
+        serializer = self.serializer_class(data=mydata)
         if serializer.is_valid():
             serializer.save()
             return Response(

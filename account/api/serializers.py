@@ -55,7 +55,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user = User(
             email=self.validated_data.get('email'),
             username=self.validated_data.get('username'),
-            name=self.validated_data.get('username'),
+            name=self.validated_data.get('name'),
             company=self.validated_data.get('company_id'),
         )
 
@@ -72,4 +72,21 @@ class TenantSerializer(serializers.ModelSerializer):
         exclude = ['free_trial']
 
 
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    password_confirm = serializers.CharField(write_only=True)
+    class Meta:
+        model = User
+        fields = ["password_confirm",'password']
+
+
+    def validate(self, attrs):
+        print(attrs.get('password'),attrs.get('password_confirm'))
+        if attrs.get('password') != attrs.get('password_confirm'):
+            raise serializers.ValidationError(
+                {
+                    'password': "Password doesn't match"
+                }
+            )
+        return attrs
 

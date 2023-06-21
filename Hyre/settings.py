@@ -20,7 +20,7 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+MEETING_URL=os.getenv('MEETING_URL')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -37,6 +37,7 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -56,11 +57,15 @@ INSTALLED_APPS = [
     "Tenant",
     "account",
     "corsheaders",
+    "Stripe",
     "cloudinary_app",
+    "video_call",
+
 
 ]
 
 MIDDLEWARE = [
+    'Tenant.middlewares.ApplicantsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     'corsheaders.middleware.CorsMiddleware',
@@ -69,10 +74,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "Hyre.middleware.CustomMiddleware",
 
 ]
-
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication'],
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated']
@@ -164,6 +168,11 @@ STATIC_URL = "static/"
 MEDIA_URL = '/media/'  # or any prefix you choose
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+#! for video call
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -172,4 +181,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL="Tenant.user"
 
-
+SECRET_STRIPE_KEY = "sk_test_51MsAYFIfGZb04ICqVdUN1vwnIJ7N4GUeMvwt8l0E2ywQdl2tPSzFhjFXHUERFJ7GHXdblcDzYichH4SlhleVbbSr00bkxJui4E"
+PUBLIC_STRIPE_KEY = "pk_test_51MsAYFIfGZb04ICq7FixyhCZAOknxZqT6ZUfiXqeRTEdWmu3O4wLlQU2y0rj8PxAwzEyYA1GxI0JF8p9NNvCxuZP00dJC7W6NP"

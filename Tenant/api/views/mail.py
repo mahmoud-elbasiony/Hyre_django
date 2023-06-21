@@ -46,11 +46,11 @@ class MailView(APIView):
                 status=status.HTTP_201_CREATED
             )
     @classmethod
-    def InterviewEmail(cls,name,from_email,recipient_list,meeting_url,date):
+    def InterviewEmail(cls,name,from_email,recipient_list,date,room,meeting_url):
         subject = 'Interview'
         message = 'We would like to invite you to a technical interview'
         end_message = "Thank you for your interest."
-        html_message = render_to_string('mail.html', {'subject': subject, 'message': message, "end_message": end_message, "name": name,"meeting_message":meeting_url,"date":date})
+        html_message = render_to_string('mail.html', {'subject': subject, 'message': message, "end_message": end_message, "name": name,"meeting_message":meeting_url,"date":date,"room":room})
         send_mail(subject, message, from_email, recipient_list, html_message=html_message)
 
         return Response(
