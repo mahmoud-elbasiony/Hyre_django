@@ -1,29 +1,39 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
 from Tenant.models import Interview, Applicant, User
-from Tenant.api.serializers import InterviewSerializer
-import math
+from Tenant.api.serializers import InterviewSerializer , GetInterviewSerializer
 from datetime import datetime
 from .mail import MailView
-import os
+from django.conf import settings 
+import uuid
 
 
 class InterviewView(generics.GenericAPIView):
+    get_serializer_class = GetInterviewSerializer
     serializer_class = InterviewSerializer
 
     def get(self, request):
         interviews = Interview.objects.filter(company=request.user.company.id)
-        serializer = self.serializer_class(interviews, many=True)
+        serializer = self.get_serializer_class(interviews, many=True)
         return Response({
             "success": True,
-            "message": "interviews retreived successfully",
+            "message": "interviews retrieved successfully",
             "data": serializer.data
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        interview = request.data
+        interview["interviewer"] = request.user.id
+        interview["company"] = request.user.company_id
+        room = str(uuid.uuid4())
+        interview["room"] = room
+        applicant = Applicant.objects.get(pk=interview["applicant"]) 
+        applicant.hasInterview = True
+        applicant.save()
+        serializer = self.serializer_class(data=interview)
         if serializer.is_valid():
-            serializer.save()
+            interview = serializer.save()
+            print(interview)
 
             applicant_data = Applicant.objects.get(
                 id=int(serializer.data.get('applicant'))
@@ -36,9 +46,10 @@ class InterviewView(generics.GenericAPIView):
                 applicant_data.name,
                 interviewer_data.email,
                 [applicant_data.email],
-                os.getenv('MEETING_URL'),
                 serializer.validated_data['date'],
                 serializer.validated_data['room'],
+                settings.MEETING_URL
+                
             )
 
             return Response(
@@ -51,6 +62,7 @@ class InterviewView(generics.GenericAPIView):
                     }
                 }, status=status.HTTP_201_CREATED)
         else:
+            print(serializer.errors)
             return Response(
                 {
                     "status": False,
@@ -73,13 +85,13 @@ class InterviewDetailView(generics.GenericAPIView):
             return Response(
                 {
                     "status": False,
-                    "message": f"Interview with Id: {pk} not found"
+                    "message": "Interview not found"
                 }, status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.serializer_class(interview)
         return Response({
             "status": True,
-            "message": "Interviwe retreived successfully",
+            "message": "Interview retrieved successfully",
             "data":
             {
                 "interview": serializer.data
@@ -112,10 +124,7 @@ class InterviewDetailView(generics.GenericAPIView):
                 applicant_data.name,
                 interviewer_data.email,
                 [applicant_data.email],
-                os.getenv('MEETING_URL'),
                 serializer.validated_data['date'],
-                serializer.validated_data['room'],
-
             )
 
             return Response({
