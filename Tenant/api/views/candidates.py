@@ -1,11 +1,11 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
-from Tenant.api.serializers import ApplicantSerializer
+from Tenant.api.serializers import CandidatesSerializer
 from Tenant.models import Applicant
 
 class CandidateView(generics.GenericAPIView):
 
-    serializer_class = ApplicantSerializer
+    serializer_class = CandidatesSerializer
     queryset = Applicant.objects.all()
 
     def get(self , request):
