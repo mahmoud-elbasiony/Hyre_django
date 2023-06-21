@@ -46,7 +46,7 @@ class MailView(APIView):
                 status=status.HTTP_201_CREATED
             )
     @classmethod
-    def InterviewEmail(cls,name,from_email,recipient_list,meeting_url,date,room):
+    def InterviewEmail(cls,name,from_email,recipient_list,date,meeting_url=None,room="Will Be sent Before Meeting, Stay tuned"):
         subject = 'Interview'
         message = 'We would like to invite you to a technical interview'
         end_message = "Thank you for your interest."

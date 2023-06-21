@@ -21,7 +21,10 @@ class InterviewView(generics.GenericAPIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        interview = request.data
+        interview["interviewer"] = request.user.id
+        interview["company"] = request.user.company_id
+        serializer = self.serializer_class(data=interview)
         if serializer.is_valid():
             serializer.save()
 
@@ -36,9 +39,7 @@ class InterviewView(generics.GenericAPIView):
                 applicant_data.name,
                 interviewer_data.email,
                 [applicant_data.email],
-                os.getenv('MEETING_URL'),
                 serializer.validated_data['date'],
-                serializer.validated_data['room'],
             )
 
             return Response(
@@ -51,6 +52,7 @@ class InterviewView(generics.GenericAPIView):
                     }
                 }, status=status.HTTP_201_CREATED)
         else:
+            print(serializer.errors)
             return Response(
                 {
                     "status": False,
@@ -73,7 +75,7 @@ class InterviewDetailView(generics.GenericAPIView):
             return Response(
                 {
                     "status": False,
-                    "message": f"Interview with Id: {pk} not found"
+                    "message": "Interview not found"
                 }, status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.serializer_class(interview)
@@ -112,10 +114,7 @@ class InterviewDetailView(generics.GenericAPIView):
                 applicant_data.name,
                 interviewer_data.email,
                 [applicant_data.email],
-                os.getenv('MEETING_URL'),
                 serializer.validated_data['date'],
-                serializer.validated_data['room'],
-
             )
 
             return Response({

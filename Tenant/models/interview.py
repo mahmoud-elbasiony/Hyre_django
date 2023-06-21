@@ -5,8 +5,10 @@ from .user import User
 from .applicant import Applicant
 from .position import Position
 from django.core.validators import MaxValueValidator, MinValueValidator
-# Create your models here.
+from django.conf import settings 
 
+
+# Create your models here.
 
 class Interview(TimeStampedModel):
     interviewer = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -16,9 +18,9 @@ class Interview(TimeStampedModel):
         MaxValueValidator(100),
         MinValueValidator(0)
     ], null=True)
-    date = models.DateField(blank=False)
-    url = models.CharField(blank=False)
-    room = models.CharField(blank=True)
+    date = models.DateTimeField(blank=False)
+    url = models.CharField(blank=False , default=settings.MEETING_URL)
+    room = models.CharField(blank=True , default='company')
 
     def __str__(self) -> str:
         return f"applicant: {self.applicant} position: {self.position}"
