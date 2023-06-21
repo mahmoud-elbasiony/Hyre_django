@@ -2,10 +2,8 @@ import time
 import jwt
 import os
 
-def createToken(company_id):
-    expiration_time = 60  # will be fetched from the position table
-    current_time = time.time()
-    expiration_timestamp = current_time + expiration_time
+def createToken(company_id, expiration_date):
+    expiration_timestamp = expiration_date.timestamp()
 
     payload = {
         'company_id': company_id,
@@ -17,7 +15,7 @@ def createToken(company_id):
 
     return {
         "token": token,
-        "expiration_date": time.strftime("%H:%M %d-%m", time.localtime(expiration_timestamp))
+        "expiration_date": expiration_date.strftime("%H:%M %d-%m")
     }
 
 

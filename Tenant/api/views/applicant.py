@@ -2,12 +2,16 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, parser_classes, permission_classes, authentication_classes
 from rest_framework.parsers import MultiPartParser
 from Tenant.models.applicant import Applicant
+from Tenant.models.position import Position
 from rest_framework import status
 from Tenant.api.serializers import ApplicantSerializer
+from Tenant.api.serializers import PositionSerializer
 from django.views.decorators.csrf import csrf_exempt
 from Tenant.api.token import createToken
 import os
-from rest_framework.exceptions import ValidationError
+from django.db.models import Max
+import datetime
+
 @api_view(['GET'])
 def index (request):
     try:
@@ -151,7 +155,10 @@ def destroy(request, pk):
 
 @api_view(['GET'])
 def generateAplicantFormLink (request):
-    data = createToken (request.user.company_id)
+    company_id = request.user.company_id  # Assuming you can access the company_id from the request
+    max_end_date = Position.objects.filter(company_id=company_id).aggregate(max_end_date=Max('end_date'))['max_end_date']
+    expiration_date = datetime.datetime.combine(max_end_date, datetime.time())
+    data = createToken (company_id,expiration_date)
     link= f"{os.getenv('HOST')}applicants/create/{data['token']}"
     data['link'] = link
     return Response({
