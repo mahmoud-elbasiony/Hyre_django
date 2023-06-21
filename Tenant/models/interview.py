@@ -20,7 +20,7 @@ class Interview(TimeStampedModel):
     ], null=True)
     date = models.DateTimeField(blank=False)
     url = models.CharField(blank=False , default=settings.MEETING_URL)
-    room = models.CharField(blank=True , default='company')
+    room = models.CharField(blank=True)
 
     def __str__(self) -> str:
         return f"applicant: {self.applicant} position: {self.position}"
