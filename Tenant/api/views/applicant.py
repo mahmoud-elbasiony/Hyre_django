@@ -11,7 +11,7 @@ from rest_framework.exceptions import ValidationError
 @api_view(['GET'])
 def index (request):
     try:
-        applicants = Applicant.objects.filter(company_id=request.user.id,status=2)
+        applicants = Applicant.objects.filter(company_id=request.user.company_id,status=2)
         serializer = ApplicantSerializer(applicants, many=True)
         return Response({
             "success": True,
@@ -28,7 +28,7 @@ def index (request):
 @api_view(["GET"])
 def show (request , pk):
     try:
-        applicant = Applicant.objects.filter(pk=pk , company_id=request.user.id).first()
+        applicant = Applicant.objects.filter(pk=pk , company_id=request.user.company_id).first()
         serializer = ApplicantSerializer(applicant , many=False)
         return Response ({
             "success": True,
@@ -84,7 +84,7 @@ def store (request , token):
 def edit (request , pk):
     status_applicant = request.data
     try:
-        applicant = Applicant.objects.get(pk=pk)
+        applicant = Applicant.objects.get(pk=pk , company_id=request.user.company_id)
         applicant.status = status_applicant
         serializer = ApplicantSerializer(applicant, data={'status': status_applicant}, partial=True)
         if serializer.is_valid():
@@ -108,7 +108,7 @@ def edit (request , pk):
 @api_view(["GET"])
 def show_by_position (request, position_id):
     try:
-        applicant = Applicant.objects.filter(position_id=position_id, company_id=request.user.id)
+        applicant = Applicant.objects.filter(position_id=position_id, company_id=request.user.company_id)
         serializer = ApplicantSerializer(applicant , many=True)
         return Response ({
             "success": True,
@@ -128,9 +128,10 @@ def show_by_position (request, position_id):
         } , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @csrf_exempt
+@api_view(["DELETE"])
 def destroy(request, pk):
     try:
-        applicant = Applicant.objects.get(pk=pk)
+        applicant = Applicant.objects.get(pk=pk , company_id=request.user.company_id)
         applicant.delete()
         return Response({
             "success": True,
@@ -150,7 +151,7 @@ def destroy(request, pk):
 
 @api_view(['GET'])
 def generateAplicantFormLink (request):
-    data = createToken (request.user.id)
+    data = createToken (request.user.company_id)
     link= f"{os.getenv('HOST')}applicants/create/{data['token']}"
     data['link'] = link
     return Response({

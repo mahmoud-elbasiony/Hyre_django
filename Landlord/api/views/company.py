@@ -5,13 +5,14 @@ from Tenant.api.serializers import PositionSerializer
 from Tenant.models import Position
 from django.contrib.auth.models import AnonymousUser
 from Tenant.api.token import verifyToken
-
+from Landlord.models import Tenant
+from Landlord.api.serializers import TenantSerializer
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
 def company_positions(request, token):
     if not isinstance(request.user,AnonymousUser):
-        company_id = request.user.id
+        company_id = request.user.company_id
     else:
         payload = request.payload
         company_id = payload['company_id']
@@ -27,6 +28,31 @@ def company_positions(request, token):
         return Response({
             "success": False,
             "message": "Failed to retrieve positions",
+            "data": str(e)  # Return the exception as a string
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def company_image(request, token):
+    if not isinstance(request.user,AnonymousUser):
+        company_id = request.user.company_id
+    else:
+        payload = request.payload
+        company_id = payload['company_id']
+    try:
+        company = Tenant.objects.get(id=company_id)
+        serializer = TenantSerializer(company, many=False)
+        return Response({
+            "success": True,
+            "message": "Image retrieved successfully",
+            "data": serializer.data['image']
+        })
+    except Exception as e:
+        return Response({
+            "success": False,
+            "message": "Failed to retrieve company image",
             "data": str(e)  # Return the exception as a string
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
