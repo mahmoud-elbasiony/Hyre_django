@@ -9,9 +9,10 @@ class Applicant(TimeStampedModel):
   ("Female", "Female")
 )
     status_choice = (
-  (1,"Accepted"),
+  (3,"Accepted"),
   (0,"Rejected"),
-  (2,"Pending")
+  (2,"Pending"),
+  (1,"Candidate"),
 )
     name = models.CharField(max_length=100,null=False)
     email= models.EmailField(null=False)
@@ -22,7 +23,7 @@ class Applicant(TimeStampedModel):
     status = models.IntegerField(choices=status_choice,null=False,default=2)
     birth_date = models.DateField(null=False)
     Resume = models.FileField(upload_to='raw/', blank=True, storage=RawMediaCloudinaryStorage())
-
+    hasInterview = models.BooleanField(default=False , blank=True)
 
     def __str__(self) -> str:
         return f"{self.name}"
