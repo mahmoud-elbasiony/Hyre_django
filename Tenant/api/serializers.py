@@ -5,11 +5,15 @@ from Tenant.models import Interview,Position, Applicant,User
 
 
 class InterviewSerializer(serializers.ModelSerializer):
-    # company = serializers.StringRelatedField()
-    # interviewer = serializers.StringRelatedField()
-    # applicant = serializers.StringRelatedField()
-    # position = serializers.StringRelatedField()
 
+    class Meta:
+        model = Interview
+        fields = '__all__'
+
+class GetInterviewSerializer(serializers.ModelSerializer):
+    interviewer = serializers.StringRelatedField()
+    applicant = serializers.StringRelatedField()
+    position = serializers.StringRelatedField()
     class Meta:
         model = Interview
         fields = '__all__'
