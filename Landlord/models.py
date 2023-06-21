@@ -1,6 +1,5 @@
 from django.db import models
 from .subscription import Subscription
-# Create your models here.
 
 
 class Tenant(models.Model):
