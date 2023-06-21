@@ -24,6 +24,12 @@ class ApplicantSerializer(serializers.ModelSerializer):
         model = Applicant
         fields = '__all__'
 
+class CandidatesSerializer(serializers.ModelSerializer):
+    position = serializers.StringRelatedField()
+    class Meta:
+        model = Applicant
+        fields = '__all__'
+
 
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
