@@ -35,7 +35,8 @@ class CandidateView(generics.GenericAPIView):
                 "message": "Applicant not found"
             }, status=status.HTTP_404_NOT_FOUND)
 
-        applicant.delete()
+        applicant.status = 2
+        applicant.save()
         remaining_candidates = Applicant.objects.filter(status=1)
         serializer = self.serializer_class(remaining_candidates , many=True)
         return Response({
