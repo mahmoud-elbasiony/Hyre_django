@@ -37,7 +37,7 @@ class CandidateView(generics.GenericAPIView):
 
         applicant.status = 2
         applicant.save()
-        remaining_candidates = Applicant.objects.filter(status=1)
+        remaining_candidates = Applicant.objects.filter(status=1,company_id=request.user.company_id)
         serializer = self.serializer_class(remaining_candidates , many=True)
         return Response({
             "success": True,
