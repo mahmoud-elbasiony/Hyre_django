@@ -1,10 +1,10 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
 from Tenant.models import Interview, Applicant, User
-from Tenant.api.serializers import InterviewSerializer , GetInterviewSerializer
+from Tenant.api.serializers import InterviewSerializer, GetInterviewSerializer
 from datetime import datetime
 from .mail import MailView
-from django.conf import settings 
+from django.conf import settings
 import uuid
 
 
@@ -13,6 +13,7 @@ class InterviewView(generics.GenericAPIView):
     serializer_class = InterviewSerializer
 
     def get(self, request):
+        print(request.user.company.id)
         interviews = Interview.objects.filter(company=request.user.company.id)
         serializer = self.get_serializer_class(interviews, many=True)
         return Response({
@@ -27,7 +28,7 @@ class InterviewView(generics.GenericAPIView):
         interview["company"] = request.user.company_id
         room = str(uuid.uuid4())
         interview["room"] = room
-        applicant = Applicant.objects.get(pk=interview["applicant"]) 
+        applicant = Applicant.objects.get(pk=interview["applicant"])
         applicant.hasInterview = True
         applicant.save()
         serializer = self.serializer_class(data=interview)
@@ -49,7 +50,7 @@ class InterviewView(generics.GenericAPIView):
                 serializer.validated_data['date'],
                 serializer.validated_data['room'],
                 settings.MEETING_URL
-                
+
             )
 
             return Response(

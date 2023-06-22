@@ -7,11 +7,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 
-
-
-
-
-
 class PositionView(generics.GenericAPIView):
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
@@ -26,7 +21,7 @@ class PositionView(generics.GenericAPIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        mydata={**request.data,"company":request.user.company_id}
+        mydata = {**request.data, "company": request.user.company_id}
         serializer = self.serializer_class(data=mydata)
         if serializer.is_valid():
             serializer.save()
@@ -47,11 +42,9 @@ class PositionView(generics.GenericAPIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class PositionDetailView(generics.GenericAPIView):
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
-
 
     def get_position(self, id):
         try:
@@ -87,7 +80,8 @@ class PositionDetailView(generics.GenericAPIView):
                     "message": f"position with Id: {id} not found"
                 }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = self.serializer_class(position, data=request.data, partial=True)
+        serializer = self.serializer_class(
+            position, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -113,4 +107,7 @@ class PositionDetailView(generics.GenericAPIView):
                 }, status=status.HTTP_404_NOT_FOUND)
 
         position.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "success": True,
+            "message": "position deleted successfully",
+        }, status=status.HTTP_202_ACCEPTED)
