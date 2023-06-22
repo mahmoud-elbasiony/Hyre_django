@@ -92,6 +92,7 @@ def store(request, token):
 @api_view(['PUT'])
 @csrf_exempt
 def edit(request, pk):
+
     status_applicant = request.data['status']
     try:
         applicant = Applicant.objects.get(
