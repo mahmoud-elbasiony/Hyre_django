@@ -11,7 +11,7 @@ class CandidateView(generics.GenericAPIView):
     def get(self , request):
 
         try:
-            candidates = Applicant.objects.filter(status=1)
+            candidates = Applicant.objects.filter(status=1 , company_id=request.user.company_id)
             serializer = self.serializer_class(candidates , many=True)
             return Response({
                 "success": True,
