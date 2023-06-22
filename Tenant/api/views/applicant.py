@@ -92,7 +92,8 @@ def store(request, token):
 @api_view(['PUT'])
 @csrf_exempt
 def edit(request, pk):
-    status_applicant = request.data
+
+    status_applicant = request.data['status']
     try:
         applicant = Applicant.objects.get(
             pk=pk, company_id=request.user.company_id)
@@ -174,7 +175,6 @@ def generateAplicantFormLink(request):
         max_end_date=Max('end_date'))['max_end_date']
     expiration_date = datetime.datetime.combine(max_end_date, datetime.time())
     data = createToken(company_id, expiration_date)
-    print(data)
     link = f"{os.getenv('HOST')}applicants/create/{data['token']}"
     data['link'] = link
     return Response({

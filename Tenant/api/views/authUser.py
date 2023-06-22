@@ -7,8 +7,10 @@ import math
 from .mail import MailView
 from Tenant.permissions import TenantAdminPermission
 
+
 class AuthUserView(generics.GenericAPIView):
     serializer_class = GetUserSerializer
+
     def get(self, request):
         serializer = self.serializer_class(request.user)
         return Response({
@@ -18,26 +20,28 @@ class AuthUserView(generics.GenericAPIView):
         }, status=status.HTTP_200_OK)
 
     def put(self, request):
-            self.serializer_class = updateUserSerializer
-            serializer = self.serializer_class(data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(
-                    {
-                        "success": True,
-                        "message": "information updated successfully",
-                        "data": {
-                            "user": serializer.data
-                        }
-                    },
-                    status=status.HTTP_201_CREATED
-                )
-            else:
-                return Response(
-                    {
-                        "status": False,
-                        "message": "information update failed",
-                        "data":serializer.errors
-                    },
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+        self.serializer_class = updateUserSerializer
+        serializer = self.serializer_class(
+            request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            print("putttttttttt333333333")
+            return Response(
+                {
+                    "success": True,
+                    "message": "information updated successfully",
+                    "data": {
+                        "user": serializer.data
+                    }
+                },
+                status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(
+                {
+                    "status": False,
+                    "message": "information update failed",
+                    "data": serializer.errors
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
