@@ -15,10 +15,18 @@ def destroy_user(request, pk):
     try:
         user = User.objects.get(pk=pk)
         user.delete()
-        return Response({
-            "success": True,
-            "message": "user deleted successfully",
-        }, status=status.HTTP_201_CREATED)
+        company=request.user.commpany
+        if request.user.groups.filter(name="Tenant Admin").exists():
+            company.delete()
+            return Response({
+                "success": True,
+                "message": "company deleted successfully",
+            }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({
+                "success": True,
+                "message": "user deleted successfully",
+            }, status=status.HTTP_201_CREATED)
     except User.DoesNotExist:
         return Response({
             "success": False,
