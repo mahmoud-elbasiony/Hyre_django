@@ -31,10 +31,12 @@ class InterviewView(generics.GenericAPIView):
         applicant = Applicant.objects.get(pk=interview["applicant"])
         applicant.hasInterview = True
         applicant.save()
+        print(applicant.position)
+        interview["position"]=applicant.position.id
         serializer = self.serializer_class(data=interview)
         if serializer.is_valid():
-            interview = serializer.save()
             print(interview)
+            interview = serializer.save()
 
             applicant_data = Applicant.objects.get(
                 id=int(serializer.data.get('applicant'))
@@ -149,7 +151,9 @@ class InterviewDetailView(generics.GenericAPIView):
                     "success": False,
                     "message": f"Interview with Id: {pk} not found"
                 }, status=status.HTTP_404_NOT_FOUND)
-
+        applicant=Applicant.objects.get(pk=interview.applicant.id)
+        applicant.hasInterview=False
+        applicant.save()
         interview.delete()
         remaining_interviews = Interview.objects.filter(
             company=request.user.company.id)
@@ -161,4 +165,4 @@ class InterviewDetailView(generics.GenericAPIView):
             "message": "Interview deleted successfully",
             "data": serializer.data
 
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_202_ACCEPTED)
