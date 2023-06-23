@@ -7,8 +7,7 @@ The main goal for Hyre to develop a user-friendly and efficient hiring process t
 ## DEMO
 🎬
 We Hope That You are enjoying Watching Our Demo Video 
-[Click Here](https://youtu.be/y0YarbomBV4)
-
+[Click Here](https://youtu.be/ZnjnZt5mvxE)
 
 ## FEATURES
 - Authuntication
