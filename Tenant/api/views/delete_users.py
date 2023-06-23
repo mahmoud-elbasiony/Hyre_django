@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, parser_classes, permission_classes, authentication_classes
 from rest_framework.parsers import MultiPartParser
 from Tenant.models.user import User
+from Landlord.models import Tenant
 from rest_framework import status
 from Tenant.api.serializers import GetUserSerializer
 from django.views.decorators.csrf import csrf_exempt
@@ -13,16 +14,17 @@ from rest_framework.exceptions import ValidationError
 def destroy_user(request, pk):
     print(pk)
     try:
-        user = User.objects.get(pk=pk)
-        user.delete()
-        company=request.user.commpany
+        company_id=request.user.company_id
         if request.user.groups.filter(name="Tenant Admin").exists():
+            company=Tenant.objects.get(pk=company_id)
             company.delete()
             return Response({
                 "success": True,
                 "message": "company deleted successfully",
             }, status=status.HTTP_201_CREATED)
         else:
+            user = User.objects.get(pk=pk)
+            user.delete()
             return Response({
                 "success": True,
                 "message": "user deleted successfully",
